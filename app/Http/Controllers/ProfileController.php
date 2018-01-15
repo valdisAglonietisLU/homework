@@ -7,14 +7,17 @@ use App\News;
 use App\Comments;
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
     protected $view = 'profile.';
     protected $url = '/profile/';
+    protected $extensions = ['jpg','jpeg','png'];
 
 
     public function __construct()
@@ -90,25 +93,36 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($lang,$id)
+    public function update($lang)
     {
         $item = Auth::user();
 
         $rules = [
             'name' => 'required|max:191',
-            'email' => 'required|unique:users|email',
         ];
         $validator = Validator::make(Input::all(), $rules);
 
         if($validator->fails()){
-            redirect($this->url.'edit')->withErrors($validator);
+            return redirect('/'.App::getLocale().$this->url.'edit')->withErrors($validator);
         }
 
         $item->name = Input::get('name');
-        $item->email = Input::get('email');
+        if(sizeof($_FILES) > 0 && intval($_FILES['image']['size']) > 0){
+            $upload_pathMedia = public_path().'/media/';
+
+            $file = Input::file('image');
+            $file_ext = Input::file('image')->getClientOriginalExtension();
+            if(in_array($file_ext,$this->extensions)){
+                $newFileName = Str::random(32).'.'.$file_ext;
+                $upload = Input::file('image')->move($upload_pathMedia, $newFileName);
+                $item->image = '/media/'.$newFileName;
+            }
+
+        }
+
         $item->save();
 
-        redirect($this->url);
+        return redirect('/'.App::getLocale().$this->url);
     }
 
     /**

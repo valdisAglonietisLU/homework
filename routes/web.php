@@ -23,8 +23,6 @@ Route::get('/', function($lang = null) { return redirect(Config::get('applicatio
 
 Route::group(['middleware' => 'App\Http\Middleware\setLocale','prefix' => '/{lang}'], function() {
     Auth::routes();
-
-
     Route::get('/news', 'NewsController@index');
     Route::get('/news/create','NewsController@create');
     Route::post('/news/create/','NewsController@store');
@@ -36,7 +34,7 @@ Route::group(['middleware' => 'App\Http\Middleware\setLocale','prefix' => '/{lan
     Route::post('/news/comment/{id}', 'NewsController@comment');
     Route::get('/profile/','ProfileController@index');
     Route::get('/profile/edit','ProfileController@edit');
-    Route::post('/profile/edit','ProfileController@update');
+    Route::post('/profile/update','ProfileController@update');
 
 //    Route::resource('/news', 'NewsController');
 });

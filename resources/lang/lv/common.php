@@ -23,7 +23,8 @@ return [
     'renew' => 'Atjaunot',
     'profile' => 'Profils',
     'user' => 'Lietotājs',
-    'email' => 'E-pasts'
+    'email' => 'E-pasts',
+    'image' => 'Bilde'
 
 ];
 ?>

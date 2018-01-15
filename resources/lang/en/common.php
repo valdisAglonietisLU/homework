@@ -24,6 +24,7 @@ return [
     'profile' => 'Profile',
     'user' => 'User',
     'email' => 'Email',
+    'image' => 'Image'
 
 ];
 ?>

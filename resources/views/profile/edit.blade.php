@@ -6,7 +6,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form method="POST" action="{{url('/'.App::getLocale().'/profile/edit/')}}" id="submitForm" >
+                        <form method="POST" action="{{url('/'.App::getLocale().'/profile/update/')}}" id="submitForm" enctype="multipart/form-data" >
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="name">@lang('common.name')</label>
@@ -14,8 +14,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email">@lang('common.email')</label>
-                                <input type="email" value="{{$item->email}}" class="form-control" name="email">
+                                <label for="name">@lang('common.image')</label>
+                                <input type="file" name="image" id="fileToUpload" onchange="changeImage(this.value)">
+                                <div class="image_container" >
+                                    <img id="imageViewer" class="image" src="{{url($item->image)}}">
+                                </div>
                             </div>
 
                             <div class="row">
@@ -40,4 +43,12 @@
 @endsection
 
 @section('scripts')
+<script>
+    function changeImage(image){
+        var imageViewer = document.getElementById("imageViewer");
+        imageViewer.setAttribute("src", image);
+        alert(JSON.stringify(image));
+    }
+</script>
+
 @endsection

@@ -7,6 +7,9 @@
                 <div class="panel panel-default">
                     @if(isset($item))
                         <div class="panel-title">
+                            <div class="image_container" >
+                                <img class="image" src="{{url($item->image)}}">
+                            </div>
                             <h2 class="profile-header">@lang('common.user'): <a href="{{url('/'.App::getLocale().'/profile/edit/')}}">{{$item->name}}</a></h2>
                             <h3 class="profile-header">@lang('common.email'): {{$item->email}}</h3>
                         </div>
@@ -31,9 +34,17 @@
         .profile-header{
             margin-left:20px;
         }
+        .image_container{
+            margin-left:20px;
+            margin-top:20px;
+        }
+        .image{
+            max-width: 100%;
+            min-width:100px;
+            width:calc(50% - 40px);
+        }
     </style>
 @endsection
 
 @section('scripts')
-
 @endsection
