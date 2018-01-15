@@ -7,8 +7,10 @@ use App\News;
 use App\Comments;
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class NewsController extends Controller
 {
@@ -28,9 +30,14 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $items = News::where('active',1)->orderBy('created_at','desc')->get();
+        if(Auth::check() && Auth::user()->admin){
+            $items = News::where('active',1)->orderBy('created_at','desc')->get();
+        }else{
+            $items = News::where('active',1)->where('deleted',0)->orderBy('created_at','desc')->get();
+        }
+
         return view($this->view.'index',[
-            'items' => $items
+            'items' => $items,
         ]);
     }
 
@@ -44,7 +51,7 @@ class NewsController extends Controller
         if(Auth::user()->admin){
             return View($this->view.'create');
         }else{
-            return redirect(route($this->view.'index'));
+            return redirect('/'.App::getLocale().$this->url);
         }
     }
 
@@ -54,7 +61,7 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         if(Auth::user()->admin){
 
@@ -65,7 +72,7 @@ class NewsController extends Controller
         $validator = Validator::make(Input::all(), $rules);
 
         if($validator->fails()){
-            return redirect(route($this->view.'create'))->withErrors($validator);
+            return redirect('/'.App::getLocale().$this->url.'create')->withErrors($validator);
         }
 
         $item = new News();
@@ -73,9 +80,9 @@ class NewsController extends Controller
         $item->content = Input::get('content');
         $item->save();
 
-        return redirect(route($this->view.'edit',$item->id));
+        return redirect('/'.App::getLocale().$this->url.'edit/'.$item->id);
         }else{
-            return redirect(route($this->view.'index'));
+            return redirect('/'.App::getLocale().$this->url);
         }
     }
 
@@ -85,13 +92,16 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($lang,$id)
     {
         $item = News::findOrFail($id);
-
-        return view($this->view.'show',[
-            'item' => $item,
-        ]);
+        if($item->deleted == 0){
+            return view($this->view.'show',[
+                'item' => $item,
+            ]);
+        }else{
+            return redirect('/'.App::getLocale().$this->url);
+        }
     }
 
     /**
@@ -100,17 +110,16 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($lang,$id)
     {
-        if(Auth::user()->admin){
-
         $item = News::findOrFail($id);
 
-        return view($this->view.'edit',[
-            'item' => $item
-        ]);
+        if(Auth::user()->admin && $item->deleted == 0){
+            return view($this->view.'edit',[
+                'item' => $item
+            ]);
         }else{
-            return redirect(route($this->view.'index'));
+            return redirect('/'.App::getLocale().$this->url);
         }
     }
 
@@ -121,31 +130,30 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($lang,$id)
     {
-        if(Auth::user()->admin){
-
         $item = News::findOrFail($id);
 
-        $rules = [
-            'name' => 'required|max:255',
-            'content' => 'required',
-            'active' => 'sometimes'
-        ];
-        $validator = Validator::make(Input::all(), $rules);
+        if(Auth::user()->admin && $item->deleted == 0){
+            $rules = [
+                'name' => 'required|max:255',
+                'content' => 'required',
+                'active' => 'sometimes'
+            ];
+            $validator = Validator::make(Input::all(), $rules);
 
-        if($validator->fails()){
-            return redirect(route($this->view.'edit',$item->id))->withErrors($validator);
-        }
+            if($validator->fails()){
+                return redirect('/'.App::getLocale().$this->url.'edit/'.$item->id)->withErrors($validator);
+            }
 
-        $item->name = Input::get('name');
-        $item->content = Input::get('content');
-        (Input::has('active'))?$item->active = 1: $item->active = 0;
-        $item->save();
+            $item->name = Input::get('name');
+            $item->content = Input::get('content');
+            (Input::has('active'))?$item->active = 1: $item->active = 0;
+            $item->save();
 
-        return redirect(route($this->view.'edit',$item->id));
+            return redirect('/'.App::getLocale().$this->url.'edit/'.$item->id);
         }else{
-            return redirect(route($this->view.'index'));
+            return redirect('/'.App::getLocale().$this->url);
         }
     }
 
@@ -155,34 +163,38 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($lang,$id)
     {
         if(Auth::user()->admin){
-
-        }else{
-            return redirect(route($this->view.'index'));
+            $item = News::findOrFail($id);
+            $item->deleted = 1;
+            $item->save();
         }
+        return redirect('/'.App::getLocale().$this->url);
     }
 
-    public function comment($id){
+    public function comment($lang,$id){
         $item = News::findOrFail($id);
+        if($item->deleted == 0)
+        {
+            $rules = [
+                'comment' => 'required',
+            ];
+            $validator = Validator::make(Input::all(), $rules);
 
-        $rules = [
-            'comment' => 'required',
-        ];
-        $validator = Validator::make(Input::all(), $rules);
+            if($validator->fails()){
+                return redirect('/'.App::getLocale().$this->url.'show/'.$item->id)->withErrors($validator);
+            }
 
-        if($validator->fails()){
-            return redirect(route($this->view.'show',$item->id))->withErrors($validator);
+            $comment =  new Comments();
+            $comment->content = Input::get('comment');
+            $comment->user_id = Auth::user()->id;
+            $comment->news_id = $item->id;
+            $comment->save();
+
+            return redirect('/'.App::getLocale().$this->url.'show/'.$item->id);
+        }else{
+            return redirect('/'.App::getLocale().$this->url);
         }
-
-
-        $comment =  new Comments();
-        $comment->content = Input::get('comment');
-        $comment->user_id = Auth::user()->id;
-        $comment->news_id = $item->id;
-        $comment->save();
-
-        return redirect(route($this->view.'show',$item->id));
     }
 }

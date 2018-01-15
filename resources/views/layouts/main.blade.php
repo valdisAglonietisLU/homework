@@ -19,7 +19,6 @@
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-
                 <!-- Collapsed Hamburger -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
                     <span class="sr-only">@lang('common.toggle')</span>
@@ -37,15 +36,24 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    &nbsp;
+                    <?php
+                    $redirect_url = substr(Request::path(),2);
+                    ?>
+                    @foreach(Config::get('application.languages') as $lang)
+                            <li class="{{$lang==App::getLocale()?'active':''}}">
+                                <a href="{{url('/'.$lang.$redirect_url)}}">
+                                    {{$lang}}
+                                </a>
+                            </li>
+                    @endforeach
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @guest
-                        <li><a href="{{ route('login') }}">@lang('common.login')</a></li>
-                        <li><a href="{{ route('register') }}">@lang('common.register')</a></li>
+                        <li><a href="{{ '/'.App::getLocale().'/login' }}">@lang('common.login')</a></li>
+                        <li><a href="{{ '/'.App::getLocale().'/register' }}">@lang('common.register')</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
@@ -54,24 +62,24 @@
 
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="{{route('home')}}">@lang('common.home')</a>
+                                    <a href="{{url('/'.App::getLocale().'/news')}}">@lang('common.home')</a>
                                 </li>
                                 @if(Auth::user()->admin >= 1)
 
                                     <li>
-                                        <a href="{{route('news.create')}}">
+                                        <a href="{{url('/'.App::getLocale()."/news/create")}}">
                                             @lang('common.create')
                                         </a>
                                     </li>
                                 @endif
                                 <li>
-                                    <a href="{{ route('logout') }}"
+                                    <a href="{{ '/'.App::getLocale().'/logout' }}"
                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         @lang('common.logout')
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ url('/'.App::getLocale().'/logout') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}
                                     </form>
                                 </li>

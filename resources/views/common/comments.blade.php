@@ -25,7 +25,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="panel-body">
-                    <form method="POST" action="{{route('news.comment',$id)}}" id="submitForm" >
+                    <form method="POST" action="{{url('/'.App::getLocale().'/news/comment/'.$id)}}" id="submitForm" >
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="comment">@lang('common.comment')</label>

@@ -11,9 +11,10 @@
                                 @foreach($items as $item)
                                     <li>
                                         <h2>
-                                            <a href="{{url(route('news.show',$item->id))}}">
-                                                {{$item->name}}
+                                            <a href="{{url("/".App::getLocale()."/news/show/$item->id")}}">
+                                                {{$item->name}} <i class="red">{{$item->deleted?Lang::get('common.deleted'):''}}</i>
                                             </a>
+                                            <a href="{{url("/".App::getLocale()."/news/show/$item->id")}}">@lang('common.renew')</a>
                                         </h2>
                                         <p>@lang('common.published'): {{$item->created_at}}</p>
                                     </li>
@@ -29,10 +30,15 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('css')
-
+    <style>
+        .red{
+            color:red;
+        }
+    </style>
 @endsection
 
 @section('scripts')

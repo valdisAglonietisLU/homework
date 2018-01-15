@@ -11,16 +11,32 @@
 |
 */
 
+//if (in_array(Request::segment(1), Config::get('application.languages'))) {
+//    $lang = Request::segment(1);
+//} else {
+//    $lang = Config::get('application.language');
+//}
+//App::setLocale($lang);
 
-Auth::routes();
+Route::get('/home', function($lang = null) { return redirect('/');})->name('home');
+Route::get('/', function($lang = null) { return redirect(Config::get('application.language').'/news');});
 
-Route::post('/news/comment/{id}', 'NewsController@comment')->name('news.comment');
-Route::resource('/news', 'NewsController');
-
-Route::get('/home', function() { return redirect('/news');})->name('home');
-Route::get('/', function() { return redirect('/news');});
+Route::group(['middleware' => 'App\Http\Middleware\setLocale','prefix' => '/{lang}'], function() {
+    Auth::routes();
 
 
-//Route::group(['middleware' => 'auth'], function() {
-//});
+    Route::get('/news', 'NewsController@index');
+    Route::get('/news/create','NewsController@create');
+    Route::post('/news/create/','NewsController@store');
+    Route::get('/news/show/{id}','NewsController@show');
+    Route::get('/news/edit/{id}','NewsController@edit');
+    Route::post('/news/edit/{id}','NewsController@update');
+    Route::get('/news/delete/{id}','NewsController@destroy');
+    Route::post('/news/comment/{id}', 'NewsController@comment');
+
+
+//    Route::resource('/news', 'NewsController');
+});
+
+
 

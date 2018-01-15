@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'name' => 'Name',
     'login' => 'Login',
     'register' => 'Register',
     'comment' => 'Comment',
@@ -12,7 +13,13 @@ return [
     'logout' => 'Logout',
     'create' => 'Create',
     'published' => 'Published',
-    'active' => 'Active'
+    'active' => 'Active',
+    'content' => 'Content',
+    'enter_name' => 'Enter name',
+    'be_first_to_comment' => 'Be the first one to comment',
+    'delete' => 'Delete',
+    'deleted' => 'Deleted',
+    'cancel' => 'Cancel'
 
 ];
 ?>

@@ -6,9 +6,8 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form method="POST" action="{{route('news.update',$item->id)}}" id="submitForm" >
+                        <form method="POST" action="{{url('/'.App::getLocale().'/news/edit/'.$item->id)}}" id="submitForm" >
                             {{ csrf_field() }}
-                            {{ method_field('PUT') }}
                             <div class="form-group">
                                 <label for="name">@lang('common.name')</label>
                                 <input value="{{$item->name}}" type="text" class="form-control" name="name" aria-describedby="nameHelp" placeholder="@lang('common.enter_name')">
@@ -23,7 +22,15 @@
                                 <label for="active">@lang('common.active')</label>
                                 <input name="active" type="checkbox" {{$item->active?'checked':''}}>
                             </div>
-                            <button type="submit" class="btn btn-block btn-success">@lang('common.submit')</button>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="submit" class="col-md-6 btn btn-block btn-success">@lang('common.submit')</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{{url('/'.App::getLocale().'/news/show/'.$item->id)}}" class="btn btn-block">@lang('common.cancel')</a>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>

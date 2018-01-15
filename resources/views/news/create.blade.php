@@ -6,7 +6,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form method="POST" action="{{route('news.store')}}" id="submitForm" >
+                        <form method="POST" action="{{ url('/'.App::getLocale().'/news/create')}}" id="submitForm" >
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <label for="name">@lang('common.name')</label>

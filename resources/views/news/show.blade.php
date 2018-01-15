@@ -8,11 +8,9 @@
                     <div class="panel-body">
                         <div class="panel-title">
                             <h2>{{$item->name}}</h2>
-                            @guest
-
-                            @else
-                                <a href="{{url(route($this->view.'edit',$item->id))}}">@lang('common.edit')</a>
-                                <a href="{{url(route($this->view.'delete',$item->id))}}">@lang('common.delete')</a>
+                            @if(Auth::check() && Auth::user()->admin >=1)
+                                <a class="btn btn-success" href="{{url('/'.App::getLocale().'/news/edit/'.$item->id)}}">@lang('common.edit')</a>
+                                <a class="btn btn-danger" href="{{url('/'.App::getLocale().'/news/delete/'.$item->id)}}">@lang('common.delete')</a>
                             @endif
                         </div>
 

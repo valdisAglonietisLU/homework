@@ -1,18 +1,25 @@
 <?php
 
 return [
-    'login' => 'Login',
-    'register' => 'Register',
-    'comment' => 'Comment',
-    'edit' => 'Edit',
-    'save' => 'Save',
-    'home' => 'Home',
-    'comments' => 'Comments',
-    'submit' => 'Submit',
-    'logout' => 'Logout',
-    'create' => 'Create',
-    'published' => 'Published',
-    'active' => 'Active'
+    'login' => 'Ielogoties',
+    'register' => 'Reģistrēties',
+    'comment' => 'Komentēt',
+    'edit' => 'Rediģēt',
+    'save' => 'Saglabāt',
+    'home' => 'Mājas',
+    'comments' => 'Komentāri',
+    'submit' => 'Publicēt',
+    'logout' => 'Izlogoties',
+    'create' => 'Izveidot',
+    'published' => 'Publicēts',
+    'active' => 'Aktīvs',
+    'name' => 'Nosaukums',
+    'content' => 'Saturs',
+    'enter_name' => 'Ievadiet vārdu',
+    'be_first_to_comment' => 'Esi pirmais , ikomentējot',
+    'delete' => 'Izdzēst',
+    'deleted' => 'Izdzēsts',
+    'cancel' => 'Atcelt'
 
 ];
 ?>
