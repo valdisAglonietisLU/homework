@@ -19,7 +19,11 @@ return [
     'be_first_to_comment' => 'Be the first one to comment',
     'delete' => 'Delete',
     'deleted' => 'Deleted',
-    'cancel' => 'Cancel'
+    'cancel' => 'Cancel',
+    'renew' => 'Renew',
+    'profile' => 'Profile',
+    'user' => 'User',
+    'email' => 'Email',
 
 ];
 ?>

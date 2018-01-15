@@ -19,7 +19,11 @@ return [
     'be_first_to_comment' => 'Esi pirmais , ikomentējot',
     'delete' => 'Izdzēst',
     'deleted' => 'Izdzēsts',
-    'cancel' => 'Atcelt'
+    'cancel' => 'Atcelt',
+    'renew' => 'Atjaunot',
+    'profile' => 'Profils',
+    'user' => 'Lietotājs',
+    'email' => 'E-pasts'
 
 ];
 ?>

@@ -14,7 +14,9 @@
                                             <a href="{{url("/".App::getLocale()."/news/show/$item->id")}}">
                                                 {{$item->name}} <i class="red">{{$item->deleted?Lang::get('common.deleted'):''}}</i>
                                             </a>
-                                            <a href="{{url("/".App::getLocale()."/news/show/$item->id")}}">@lang('common.renew')</a>
+                                            @if($item->deleted != 0)
+                                                <a href="{{url("/".App::getLocale()."/news/renew/$item->id")}}">@lang('common.renew')</a>
+                                            @endif
                                         </h2>
                                         <p>@lang('common.published'): {{$item->created_at}}</p>
                                     </li>

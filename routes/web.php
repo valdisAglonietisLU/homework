@@ -32,8 +32,11 @@ Route::group(['middleware' => 'App\Http\Middleware\setLocale','prefix' => '/{lan
     Route::get('/news/edit/{id}','NewsController@edit');
     Route::post('/news/edit/{id}','NewsController@update');
     Route::get('/news/delete/{id}','NewsController@destroy');
+    Route::get('/news/renew/{id}','NewsController@renew');
     Route::post('/news/comment/{id}', 'NewsController@comment');
-
+    Route::get('/profile/','ProfileController@index');
+    Route::get('/profile/edit','ProfileController@edit');
+    Route::post('/profile/edit','ProfileController@update');
 
 //    Route::resource('/news', 'NewsController');
 });

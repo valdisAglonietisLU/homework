@@ -63,6 +63,7 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="{{url('/'.App::getLocale().'/news')}}">@lang('common.home')</a>
+                                    <a href="{{url('/'.App::getLocale().'/profile')}}">@lang('common.profile')</a>
                                 </li>
                                 @if(Auth::user()->admin >= 1)
 

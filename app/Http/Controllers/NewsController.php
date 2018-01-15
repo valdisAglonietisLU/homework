@@ -136,7 +136,7 @@ class NewsController extends Controller
 
         if(Auth::user()->admin && $item->deleted == 0){
             $rules = [
-                'name' => 'required|max:255',
+                'name' => 'required|max:191',
                 'content' => 'required',
                 'active' => 'sometimes'
             ];
@@ -171,6 +171,21 @@ class NewsController extends Controller
             $item->save();
         }
         return redirect('/'.App::getLocale().$this->url);
+    }
+
+    public function renew($lang,$id)
+    {
+        $item = News::findOrFail($id);
+
+        if(Auth::user()->admin){
+            $item->deleted = 0;
+            $item->active = 0;
+            $item->save();
+
+            return redirect('/'.App::getLocale().$this->url.'edit/'.$item->id);
+        }else{
+            return redirect('/'.App::getLocale().$this->url);
+        }
     }
 
     public function comment($lang,$id){

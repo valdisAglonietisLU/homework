@@ -31,10 +31,18 @@
                             <label for="comment">@lang('common.comment')</label>
                             <textarea class="form-control" name="comment"></textarea>
                         </div>
-
-                        <button type="submit" class="btn btn-block btn-success">@lang('common.submit')</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-block btn-success">@lang('common.submit')</button>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{url('/'.App::getLocale().'/news/')}}" class="btn btn-block grey">@lang('common.cancel')</a>
+                            </div>
+                        </div>
                     </form>
         </div>
     </div>
 </div>
 @endguest
+
+
